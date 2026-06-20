@@ -1,0 +1,342 @@
+==============================================================
+  TIP7077 – Inteligência Computacional Aplicada  (PPGETI)
+  1.º Trabalho Computacional  –  Dataset Gauss3  (NIST/StRD)
+==============================================================
+
+  INFORMAÇÕES DO DATASET
+  ────────────────────────────────────────
+  Arquivo            : Gauss3.dat
+  Total de amostras  : 250
+  Intervalo de x     : [1.0000, 250.0000]
+  Intervalo de y     : [1.1827, 135.1278]
+  Média de y         : 60.5319
+  Desvio padrão de y : 40.0663
+
+  DIVISÃO TREINO / VALIDAÇÃO
+  ────────────────────────────────────────
+  Proporção   : 70% treino  /  30% validação
+  Treino      : 175 amostras
+  Validação   : 75 amostras
+  Semente     : 7  (reprodutibilidade)
+
+==============================================================
+  MODELO 1 – REGRESSÃO POLINOMIAL
+==============================================================
+
+  Seleção de estrutura – Regressão Polinomial (R² no conjunto de validação)
+
+  +--------+------------+------------+
+  | Grau k |     R²     |            |
+  +--------+------------+------------+
+  |   1    |  0.410765  |            |
+  |   2    |  0.518301  |            |
+  |   3    |  0.506141  |            |
+  |   4    |  0.815137  |            |
+  |   5    |  0.808030  |            |
+  |   6    |  0.945175  |            |
+  |   7    |  0.946446  |            |
+  |   8    |  0.981992  |            |
+  |   9    |  0.981621  |            |
+  |   10   |  0.982759  |  ★ MELHOR  |
+  |   11   |  0.981562  |            |
+  |   12   |  0.982285  |            |
+  |   13   |  0.979336  |            |
+  |   14   |  0.982405  |            |
+  +--------+------------+------------+
+
+  Estrutura escolhida: grau k = 10  →  R² = 0.982759
+
+  Métricas finais – Polinomial (k=10)
+  ──────────────────────────────────────────────
+  Métrica                               Valor
+  ──────────────────────────────────────────────
+  R²                                 0.982759
+  Correlação de Pearson (r)          0.991479
+  r²                                 0.983031
+  |R² − r²|                          2.72e-04  (diferem!)
+  Resíduo médio (bias)                 0.5289
+  Desvio padrão dos resíduos           5.2256
+  ──────────────────────────────────────────────
+
+  Observações sobre os gráficos – Modelo 1:
+  (A) Curva de Ajuste: verifica se o polinômio captura a tendência
+      global dos dados sem oscilações excessivas (sobreajuste).
+  (B) Histograma dos Resíduos: para um bom ajuste espera-se
+      distribuição aproximadamente gaussiana e centrada em zero.
+      Assimetria ou caudas pesadas indicam padrão sistemático não
+      capturado pelo modelo.
+  (C) Real × Predito: pontos sobre a diagonal y=ŷ indicam ajuste
+      perfeito. Desvios sistemáticos revelam viés do modelo.
+  Nota: para regressão linear nos parâmetros, r² = R² exatamente.
+  Arquivo de figura: fig_modelo1_polinomial.png
+  [FIG] fig_modelo1_polinomial.png
+
+==============================================================
+  MODELO 2 – REGRESSÃO LINEAR POR PARTES
+==============================================================
+
+  Seleção de estrutura – Linear por Partes (R² no conjunto de validação)
+
+  +------------+------------+------------+
+  | Segmentos  |     R²     |            |
+  +------------+------------+------------+
+  |     2      |  0.672322  |            |
+  |     3      |  0.926669  |            |
+  |     4      |  0.971528  |            |
+  |     5      |  0.967414  |            |
+  |     6      |  0.974953  |            |
+  |     7      |  0.992835  |            |
+  |     8      |  0.987356  |            |
+  |     9      |  0.992203  |            |
+  |     10     |  0.990294  |            |
+  |     11     |  0.994092  |            |
+  |     12     |  0.993531  |            |
+  |     13     |  0.993484  |            |
+  |     14     |  0.993597  |            |
+  |     15     |  0.994411  |            |
+  |     16     |  0.993898  |            |
+  |     17     |  0.993296  |            |
+  |     18     |  0.995010  |            |
+  |     19     |  0.995088  |  ★ MELHOR  |
+  |     20     |  0.993976  |            |
+  |     21     |  0.994898  |            |
+  |     22     |  0.994221  |            |
+  |     23     |  0.995036  |            |
+  |     24     |  0.993641  |            |
+  |     25     |  0.994344  |            |
+  |     26     |  0.994793  |            |
+  |     27     |  0.994474  |            |
+  |     28     |  0.994052  |            |
+  |     29     |  0.994691  |            |
+  |     30     |  0.994176  |            |
+  +------------+------------+------------+
+
+  Estrutura escolhida: 19 segmentos  →  R² = 0.995088
+
+  Métricas finais – Linear por Partes (19 seg)
+  ──────────────────────────────────────────────
+  Métrica                               Valor
+  ──────────────────────────────────────────────
+  R²                                 0.995088
+  Correlação de Pearson (r)          0.997593
+  r²                                 0.995192
+  |R² − r²|                          1.04e-04  (diferem!)
+  Resíduo médio (bias)                -0.0283
+  Desvio padrão dos resíduos           2.8032
+  ──────────────────────────────────────────────
+
+  Observações sobre os gráficos – Modelo 2:
+  (A) Curva de Ajuste: a curva é uma sequência de segmentos lineares.
+      Mais segmentos → maior capacidade de aproximação local.
+  (B) Histograma dos Resíduos: com número adequado de segmentos,
+      os resíduos devem se aproximar de gaussiana centrada em zero.
+  (C) Real × Predito: o alinhamento com a diagonal indica qualidade
+      do ajuste nos dados de validação (nunca vistos no treino).
+  Arquivo de figura: fig_modelo2_piecewise.png
+  [FIG] fig_modelo2_piecewise.png
+
+==============================================================
+  MODELO 3 – FUZZY MAMDANI (saídas singleton)
+==============================================================
+
+  Seleção de estrutura – Fuzzy Mamdani (R² no conjunto de validação)
+
+  +------------+------------+------------+
+  | Conjuntos N |     R²     |            |
+  +------------+------------+------------+
+  |     2      |  0.410692  |            |
+  |     3      |  0.672642  |            |
+  |     4      |  0.543516  |            |
+  |     5      |  0.970141  |            |
+  |     6      |  0.912969  |            |
+  |     7      |  0.950558  |            |
+  |     8      |  0.990779  |            |
+  |     9      |  0.971827  |            |
+  |     10     |  0.984156  |            |
+  |     11     |  0.988033  |            |
+  |     12     |  0.987972  |            |
+  |     13     |  0.991639  |            |
+  |     14     |  0.992237  |            |
+  |     15     |  0.992863  |            |
+  |     16     |  0.993968  |            |
+  |     17     |  0.993964  |            |
+  |     18     |  0.994138  |            |
+  |     19     |  0.995036  |            |
+  |     20     |  0.994579  |            |
+  |     21     |  0.994510  |            |
+  |     22     |  0.994975  |            |
+  |     23     |  0.995143  |  ★ MELHOR  |
+  |     24     |  0.994930  |            |
+  |     25     |  0.994912  |            |
+  +------------+------------+------------+
+
+  Estrutura escolhida: N = 23 conjuntos  →  R² = 0.995143
+
+==================================================================
+  REGRAS DO MODELO FUZZY MAMDANI  –  saídas singleton
+==================================================================
+     #  Conjunto A_i            Centro (x)  Singleton c_i (y)
+  ────────────────────────────────────────────────────────────
+  Regra  1:  SE x é "muito baixo         "  (centro=   2.000)  →  y =    96.0195
+  Regra  2:  SE x é "baixo-moderado      "  (centro=  13.227)  →  y =    86.3082
+  Regra  3:  SE x é "médio-baixo         "  (centro=  24.455)  →  y =    76.5186
+  Regra  4:  SE x é "médio               "  (centro=  35.682)  →  y =    65.9942
+  Regra  5:  SE x é "médio-alto          "  (centro=  46.909)  →  y =    58.4736
+  Regra  6:  SE x é "alto-moderado       "  (centro=  58.136)  →  y =    53.6544
+  Regra  7:  SE x é "alto                "  (centro=  69.364)  →  y =    49.9195
+  Regra  8:  SE x é "muito alto          "  (centro=  80.591)  →  y =    55.4323
+  Regra  9:  SE x é "nível 9             "  (centro=  91.818)  →  y =    85.2573
+  Regra 10:  SE x é "nível 10            "  (centro= 103.045)  →  y =   122.9146
+  Regra 11:  SE x é "nível 11            "  (centro= 114.273)  →  y =   134.4747
+  Regra 12:  SE x é "nível 12            "  (centro= 125.500)  →  y =   114.6318
+  Regra 13:  SE x é "nível 13            "  (centro= 136.727)  →  y =   107.1452
+  Regra 14:  SE x é "nível 14            "  (centro= 147.955)  →  y =   105.0168
+  Regra 15:  SE x é "nível 15            "  (centro= 159.182)  →  y =    71.3000
+  Regra 16:  SE x é "nível 16            "  (centro= 170.409)  →  y =    34.7243
+  Regra 17:  SE x é "nível 17            "  (centro= 181.636)  →  y =    14.1899
+  Regra 18:  SE x é "nível 18            "  (centro= 192.864)  →  y =    12.8904
+  Regra 19:  SE x é "nível 19            "  (centro= 204.091)  →  y =     9.9018
+  Regra 20:  SE x é "nível 20            "  (centro= 215.318)  →  y =    10.0586
+  Regra 21:  SE x é "nível 21            "  (centro= 226.545)  →  y =     9.2924
+  Regra 22:  SE x é "nível 22            "  (centro= 237.773)  →  y =     7.1320
+  Regra 23:  SE x é "nível 23            "  (centro= 249.000)  →  y =     2.1735
+==================================================================
+
+  Métricas finais – Fuzzy Mamdani (23 conj.)
+  ──────────────────────────────────────────────
+  Métrica                               Valor
+  ──────────────────────────────────────────────
+  R²                                 0.995143
+  Correlação de Pearson (r)          0.997644
+  r²                                 0.995294
+  |R² − r²|                          1.52e-04  (diferem!)
+  Resíduo médio (bias)                 0.0570
+  Desvio padrão dos resíduos           2.7872
+  ──────────────────────────────────────────────
+
+  Observações sobre os gráficos – Modelo 3:
+  (A) Curva de Ajuste: a curva suave resulta da interpolação ponderada
+      dos singletons pelas pertinências triangulares normalizadas.
+  (B) Histograma dos Resíduos: com N suficiente, os resíduos devem
+      aproximar uma gaussiana. N baixo gera resíduos com estrutura.
+  (C) Real × Predito: o alinhamento com y=ŷ valida a capacidade
+      de generalização do modelo fuzzy para dados não vistos.
+  Arquivos de figura: fig_modelo3_mamdani.png  /  fig_modelo3_mfs.png
+  [FIG] fig_modelo3_mamdani.png
+  [FIG] fig_modelo3_mfs.png
+
+==============================================================
+  MODELO 4 – FUZZY TAKAGI-SUGENO ORDEM 1
+==============================================================
+
+  Seleção de estrutura – Takagi-Sugeno Ord.1 (R² no conjunto de validação)
+
+  +------------+------------+------------+
+  | Conjuntos N |     R²     |            |
+  +------------+------------+------------+
+  |     2      |  0.519765  |            |
+  |     3      |  0.944345  |            |
+  |     4      |  0.981340  |            |
+  |     5      |  0.970783  |            |
+  |     6      |  0.991009  |            |
+  |     7      |  0.992895  |            |
+  |     8      |  0.992680  |            |
+  |     9      |  0.994636  |            |
+  |     10     |  0.994919  |            |
+  |     11     |  0.994680  |            |
+  |     12     |  0.995436  |  ★ MELHOR  |
+  |     13     |  0.995020  |            |
+  |     14     |  0.995198  |            |
+  |     15     |  0.994651  |            |
+  |     16     |  0.995268  |            |
+  |     17     |  0.995197  |            |
+  |     18     |  0.995215  |            |
+  |     19     |  0.994425  |            |
+  |     20     |  0.995222  |            |
+  |     21     |  0.995274  |            |
+  |     22     |  0.994922  |            |
+  |     23     |  0.994815  |            |
+  |     24     |  0.994652  |            |
+  |     25     |  0.995057  |            |
+  +------------+------------+------------+
+
+  Estrutura escolhida: N = 12 conjuntos  →  R² = 0.995436
+
+======================================================================
+  REGRAS DO MODELO TAKAGI-SUGENO ORDEM 1
+======================================================================
+  Regra       Centro A_i    a_i (coef. x)  b_i (constante)
+  ────────────────────────────────────────────────────────
+  Regra  1:  centro =    2.000  →  y =    +0.9318·x    +94.1567
+  Regra  2:  centro =   24.455  →  y =    +0.9559·x    +53.4473
+  Regra  3:  centro =   46.909  →  y =    +1.2764·x     -0.9014
+  Regra  4:  centro =   69.364  →  y =    +1.4536·x    -50.4822
+  Regra  5:  centro =   91.818  →  y =    +3.1980·x   -208.7478
+  Regra  6:  centro =  114.273  →  y =    +1.1972·x     -3.3541
+  Regra  7:  centro =  136.727  →  y =    +1.8206·x   -142.7603
+  Regra  8:  centro =  159.182  →  y =    -0.6227·x   +169.7511
+  Regra  9:  centro =  181.636  →  y =    +0.5051·x    -77.1814
+  Regra 10:  centro =  204.091  →  y =    +0.4249·x    -76.9095
+  Regra 11:  centro =  226.545  →  y =    +0.2721·x    -52.7525
+  Regra 12:  centro =  249.000  →  y =    +0.0082·x     +0.0000
+======================================================================
+
+  Métricas finais – Takagi-Sugeno Ord.1 (12 conj.)
+  ──────────────────────────────────────────────
+  Métrica                               Valor
+  ──────────────────────────────────────────────
+  R²                                 0.995436
+  Correlação de Pearson (r)          0.997785
+  r²                                 0.995575
+  |R² − r²|                          1.38e-04  (diferem!)
+  Resíduo médio (bias)                 0.1121
+  Desvio padrão dos resíduos           2.6999
+  ──────────────────────────────────────────────
+
+  Observações sobre os gráficos – Modelo 4:
+  (A) Curva de Ajuste: TS-1 usa funções afins por regra, o que confere
+      maior flexibilidade local do que singletons constantes (TS-0).
+  (B) Histograma dos Resíduos: espera-se gaussiana centrada em zero;
+      resíduos menores que o Mamdani para mesma quantidade de regras.
+  (C) Real × Predito: TS-1 tende a apresentar R² mais alto que
+      Mamdani, pois cada regra possui graus de liberdade adicionais.
+  Arquivo de figura: fig_modelo4_ts1.png
+  [FIG] fig_modelo4_ts1.png
+
+==============================================================
+  RESUMO COMPARATIVO – TODOS OS MODELOS
+==============================================================
+
+  Avaliação no conjunto de VALIDAÇÃO (30% dos dados, nunca vistos
+  durante o treino). Todos os modelos foram selecionados e treinados
+  exclusivamente com os 70% de treino.
+
++--------------------------------------------+----------+----------+----------+--------------+
+| Modelo                                     |    R²    |    r     |    r²    |   |R²−r²|    |
++--------------------------------------------+----------+----------+----------+--------------+
+| Polinomial (k=10)                          |  0.9828  |  0.9915  |  0.9830  |   2.72e-04   |
+| Linear por Partes (19 seg)                 |  0.9951  |  0.9976  |  0.9952  |   1.04e-04   |
+| Fuzzy Mamdani (23 conj.)                   |  0.9951  |  0.9976  |  0.9953  |   1.52e-04   |
+| Takagi-Sugeno Ord.1 (12 conj.)             |  0.9954  |  0.9978  |  0.9956  |   1.38e-04   |
++--------------------------------------------+----------+----------+----------+--------------+
+
+  Interpretação da tabela:
+  • R²: proporção da variância de y explicada pelo modelo (0–1).
+  • r : correlação de Pearson entre valores reais e preditos.
+  • r²: quadrado da correlação; deve ser igual ao R² para modelos
+        lineares nos parâmetros (MQ). A coluna |R²−r²| verifica isso.
+  • Quanto mais próximo de 1.0, melhor o ajuste.
+  [FIG] fig_comparacao_r2.png
+
+  ARQUIVOS GERADOS
+  ──────────────────────────────────────────────────
+  fig_modelo1_polinomial.png         Ajuste + resíduos + dispersão – Modelo 1
+  fig_modelo2_piecewise.png          Ajuste + resíduos + dispersão – Modelo 2
+  fig_modelo3_mamdani.png            Ajuste + resíduos + dispersão – Modelo 3
+  fig_modelo3_mfs.png                Funções de pertinência – Mamdani
+  fig_modelo4_ts1.png                Ajuste + resíduos + dispersão – Modelo 4
+  fig_comparacao_r2.png              Comparação de R² entre modelos
+  resultados_gauss3.txt              Este arquivo – todos os resultados
+
+  Execução concluída com sucesso.
+==============================================================
